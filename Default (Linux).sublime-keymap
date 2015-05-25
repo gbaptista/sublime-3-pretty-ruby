@@ -1,0 +1,3 @@
+[
+  { "keys": ["ctrl+shift+r", "ctrl+shift+p"], "command": "pretty_ruby_format" }
+]

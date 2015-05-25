@@ -1,0 +1,7 @@
+{
+  //  which ruby
+  "ruby_path": "ruby",
+
+  //  which ruby
+  "rubocop_path": "rubocop"
+}
