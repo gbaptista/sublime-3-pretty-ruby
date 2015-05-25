@@ -2,6 +2,6 @@
   //  which ruby
   "ruby_path": "ruby",
 
-  //  which ruby
+  //  which rubocop
   "rubocop_path": "rubocop"
 }
