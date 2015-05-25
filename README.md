@@ -43,9 +43,9 @@ Pretty Ruby: Format
 
 ### Default Shortcuts
 
-* Linux: _ctrl + shift + r + r_
-* Mac: shift + super + r + r
-* Windows: ctrl + shift + r + r
+* Linux: _ctrl + shift + r + p_ `["ctrl+shift+r", "ctrl+shift+p"]`
+* Mac: _shift + super + r + p_ `["shift+super+r", "shift+super+p"]`
+* Windows: _ctrl + shift + r + p_ `["ctrl+shift+r", "ctrl+shift+p"]`
 
 ### Custom Ruby/Rubocop path:
 `User/Preferences.sublime-settings`:
