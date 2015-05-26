@@ -39,7 +39,7 @@ Result:
 
 ### Command Palette
 
-Pretty Ruby: Format
+Pretty Ruby: Format `pretty_ruby_format`
 
 ### Default Shortcuts
 
@@ -47,7 +47,13 @@ Pretty Ruby: Format
 * Mac: _shift + super + r + p_ `["shift+super+r", "shift+super+p"]`
 * Windows: _ctrl + shift + r + p_ `["ctrl+shift+r", "ctrl+shift+p"]`
 
-### Custom Ruby/Rubocop path:
+### Custom Shortcuts
+`User/Default (Linux).sublime-keymap`
+```python
+{ "keys": ["ctrl+shift+h"], "command": "pretty_ruby_format" }
+```
+
+### Custom Ruby/RuboCop path:
 `User/Preferences.sublime-settings`:
 ```python
 //  which ruby
