@@ -48,7 +48,7 @@ Pretty Ruby: Format `pretty_ruby_format`
 * Windows: _ctrl + shift + r + p_ `["ctrl+shift+r", "ctrl+shift+p"]`
 
 ### Custom Shortcuts
-`User/Default (Linux).sublime-keymap`
+`User/Default (Linux).sublime-keymap`:
 ```python
 { "keys": ["ctrl+shift+h"], "command": "pretty_ruby_format" }
 ```
