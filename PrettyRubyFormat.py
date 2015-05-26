@@ -21,7 +21,7 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
 
         source = original_source
 
-        rubocop_source = self.apply_rubocop_autocorrect(rubocop_path, source)
+        rubocop_source = self.apply_rubocop_autocorrect(rubocop_path, source, True)
         pp_source      = self.apply_pp(ruby_path, rubocop_source)
 
         if(rubocop_source != pp_source):
@@ -49,22 +49,26 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
     if output:
       return output
     else:
-      print("Ruby PP Error: \n" + self.execute_system_command(ruby_pp_command))
+      print("\nPretty Ruby | Ruby PP Warning: \n" + self.execute_system_command(ruby_pp_command))
       return source
 
-  def apply_rubocop_autocorrect(self, rubocop_path, source):
+  def apply_rubocop_autocorrect(self, rubocop_path, source, show_error=False):
     try:
       temp_dir = tempfile.mkdtemp()
       with open(temp_dir + '/rbcac.rb', mode='w', encoding='utf-8') as f:
         f.write(source)
 
-      self.execute_system_command(rubocop_path + ' --auto-correct ' + temp_dir + '/rbcac.rb')
+      rubocop_output = self.execute_system_command(rubocop_path + ' --auto-correct ' + temp_dir + '/rbcac.rb')
 
       with open(temp_dir + '/rbcac.rb', encoding='utf-8') as f:
         output = f.read()
 
     finally:
       shutil.rmtree(temp_dir)
+
+      if(show_error and re.search(': not found|[0-9]:in', rubocop_output)):
+        print("\nPretty Ruby | RuboCop Warning: \n" + rubocop_output)
+
       if output:
         return output
       else:
