@@ -38,10 +38,10 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
   def apply_pp(self, ruby_path, source):
     output = ''
 
-    source = source.replace('"', '\\"')
-    source = source.replace('\\\\"', '\\\\\\"')
+    prepared_source = source.replace('"', '\\"')
+    prepared_source = prepared_source.replace('\\\\"', '\\\\\\"')
 
-    ruby_pp_source = "o = [" + source + "]; raise unless o.size == 1; o = o.first; raise unless [Array, Hash].include? o.class; require 'pp'; pp(o)"
+    ruby_pp_source = "o = [" + prepared_source + "]; raise unless o.size == 1; o = o.first; raise unless [Array, Hash].include? o.class; require 'pp'; pp(o)"
     ruby_pp_command = ruby_path + ' -e "' + ruby_pp_source + '"'
 
     output = self.execute_system_command(ruby_pp_command, False)
