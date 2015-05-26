@@ -6,6 +6,12 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
     ruby_path    = self.load_ruby_path()
     rubocop_path = self.load_rubocop_path()
 
+    if not self.execute_system_command('which ruby', False):
+      sublime.error_message("Pretty Ruby\n\nWarning: 'ruby' command not found.\n\nRun the following command to discover your ruby path:\n\nwhich ruby\n\nMore info:\nhttps://github.com/gbaptista/sublime-3-pretty-ruby#custom-rubyrubocop-path")
+
+    if not self.execute_system_command('which rubocop', False):
+      sublime.error_message("Pretty Ruby\n\nWarning: 'rubocop' command not found.\n\nRun the following command to discover your rubocop path:\n\nwhich rubocop\n\nMore info:\nhttps://github.com/gbaptista/sublime-3-pretty-ruby#custom-rubyrubocop-path")
+
     for region in self.view.sel():
       if not region.empty():
 
