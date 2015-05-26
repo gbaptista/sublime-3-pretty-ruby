@@ -30,25 +30,19 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
   def apply_pp(self, ruby_path, source):
     output = ''
 
-    ruby_pp_command = ''
+    source = source.replace('"', '\\"')
+    source = source.replace('\\\\"', '\\\\\\"')
 
-    try:
-      temp_dir = tempfile.mkdtemp()
-      with open(temp_dir + '/pp.rb', mode='w', encoding='utf-8') as f:
-        f.write(source)
+    ruby_pp_source = "o = [" + source + "]; raise unless o.size == 1; o = o.first; raise unless [Array, Hash].include? o.class; require 'pp'; pp(o)"
+    ruby_pp_command = ruby_path + ' -e "' + ruby_pp_source + '"'
 
-      ruby_pp_source = "o = [eval(File.read('" + temp_dir + "/pp.rb'))]; o = o.first; raise unless [Array, Hash].include? o.class; require 'pp'; pp(o)"
-      ruby_pp_command = ruby_path + ' -e "' + ruby_pp_source + '"'
+    output = self.execute_system_command(ruby_pp_command, False)
 
-      output = self.execute_system_command(ruby_pp_command, False)
-    finally:
-      shutil.rmtree(temp_dir)
-
-      if output:
-        return output
-      else:
-        print("Ruby PP Error: \n" + self.execute_system_command(ruby_pp_command))
-        return source
+    if output:
+      return output
+    else:
+      print("Ruby PP Error: \n" + self.execute_system_command(ruby_pp_command))
+      return source
 
   def apply_rubocop_autocorrect(self, rubocop_path, source):
     try:
