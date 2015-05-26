@@ -13,10 +13,13 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
 
         source = original_source
 
-        # Needs to apply Rubocop Autocorrect twice to PP works "fine".
-        source = self.apply_rubocop_autocorrect(rubocop_path, source)
-        source = self.apply_pp(ruby_path, source)
-        source = self.apply_rubocop_autocorrect(rubocop_path, source)
+        rubocop_source = self.apply_rubocop_autocorrect(rubocop_path, source)
+        pp_source      = self.apply_pp(ruby_path, rubocop_source)
+
+        if(rubocop_source != pp_source):
+          source = self.apply_rubocop_autocorrect(rubocop_path, pp_source)
+        else:
+          source = rubocop_source
 
         if(source != original_source):
           self.view.replace(edit, region, source)
@@ -24,28 +27,38 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
         else:
           sublime.status_message('Pretty Ruby | Format: Nothing to do.')
 
-
   def apply_pp(self, ruby_path, source):
-    ruby_pp_source = "o = [" + source + "]; o = o.first; raise unless [Array, Hash].include? o.class; require 'pp'; pp(o)"
-    ruby_pp_command = ruby_path + ' -e "' + ruby_pp_source + '"'
+    output = ''
 
-    output = self.execute_system_command(ruby_pp_command, False)
+    ruby_pp_command = ''
 
-    if output:
-      return output
-    else:
-      print("Ruby PP Error: \n" + self.execute_system_command(ruby_pp_command))
-      return source
+    try:
+      temp_dir = tempfile.mkdtemp()
+      with open(temp_dir + '/pp.rb', mode='w', encoding='utf-8') as f:
+        f.write(source)
+
+      ruby_pp_source = "o = [eval(File.read('" + temp_dir + "/pp.rb'))]; o = o.first; raise unless [Array, Hash].include? o.class; require 'pp'; pp(o)"
+      ruby_pp_command = ruby_path + ' -e "' + ruby_pp_source + '"'
+
+      output = self.execute_system_command(ruby_pp_command, False)
+    finally:
+      shutil.rmtree(temp_dir)
+
+      if output:
+        return output
+      else:
+        print("Ruby PP Error: \n" + self.execute_system_command(ruby_pp_command))
+        return source
 
   def apply_rubocop_autocorrect(self, rubocop_path, source):
     try:
       temp_dir = tempfile.mkdtemp()
-      with open(temp_dir + '/c.rb', mode='w', encoding='utf-8') as f:
+      with open(temp_dir + '/rbcac.rb', mode='w', encoding='utf-8') as f:
         f.write(source)
 
-      self.execute_system_command(rubocop_path + ' --auto-correct ' + temp_dir + '/c.rb')
+      self.execute_system_command(rubocop_path + ' --auto-correct ' + temp_dir + '/rbcac.rb')
 
-      with open(temp_dir + '/c.rb', encoding='utf-8') as f:
+      with open(temp_dir + '/rbcac.rb', encoding='utf-8') as f:
         output = f.read()
 
     finally:
