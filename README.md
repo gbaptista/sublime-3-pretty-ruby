@@ -62,3 +62,27 @@ Pretty Ruby: Format `pretty_ruby_format`
 //  which rubocop
 "rubocop_path": "/home/user/.rvm/gems/ruby-2.2.2/bin/rubocop"
 ```
+
+#### RuboCop Problem (RVM): executable hooks
+`/usr/bin/env: ruby_executable_hooks: No such file or directory`
+
+Use `wrappers` instead of `bin`:
+
+`User/Preferences.sublime-settings`:
+```python
+//  which rubocop
+// "rubocop_path": "/home/user/.rvm/gems/ruby-2.2.2/bin/rubocop" // wrong
+"rubocop_path": "/home/user/.rvm/gems/ruby-2.2.2/wrappers/rubocop" // correct
+```
+
+#### Ruby Problem (RVM): /wrappers/ruby: not found
+`/bin/sh: 1: /home/user/.rvm/rubies/ruby-2.2.2/wrappers/ruby: not found`
+
+Don't use `wrappers` for ruby bin.
+
+`User/Preferences.sublime-settings`:
+```python
+//  which rubocop
+// "ruby_path": "/home/user/.rvm/rubies/ruby-2.2.2/wrappers/ruby" // wrong
+"ruby_path": "/home/user/.rvm/rubies/ruby-2.2.2/bin/ruby" // correct
+```
