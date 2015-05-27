@@ -49,7 +49,7 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
     if output:
       return output
     else:
-      if(re.search('/wrappers/', ruby_path)):
+      if(re.search('rvm', ruby_path) and re.search('/wrappers/', ruby_path)):
         sublime.error_message("Pretty Ruby\n\nWarning: Don't use wrappers for ruby bin.\n\nWrong:\n" + ruby_path + "\n\nCorrect:\n" + ruby_path.replace('/wrappers/', '/bin/') + "\n\nMore info:\nhttps://github.com/gbaptista/sublime-3-pretty-ruby#ruby-problem-rvm-wrappersruby-not-found")
       print("\nPretty Ruby | Ruby PP Warning: \n[" + ruby_path + "]\n" + self.execute_system_command(ruby_pp_command))
       return source
