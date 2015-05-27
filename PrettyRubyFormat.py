@@ -49,7 +49,9 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
     if output:
       return output
     else:
-      print("\nPretty Ruby | Ruby PP Warning: \n" + self.execute_system_command(ruby_pp_command))
+      if(re.search('/wrappers/', ruby_path)):
+        sublime.error_message("Pretty Ruby\n\nWarning: Don't use wrappers for ruby bin.\n\nWrong:\n" + ruby_path + "\n\nCorrect:\n" + ruby_path.replace('/wrappers/', '/bin/') + "\n\nMore info:\nhttps://github.com/gbaptista/sublime-3-pretty-ruby#ruby-problem-rvm-wrappersruby-not-found")
+      print("\nPretty Ruby | Ruby PP Warning: \n[" + ruby_path + "]\n" + self.execute_system_command(ruby_pp_command))
       return source
 
   def apply_rubocop_autocorrect(self, rubocop_path, source, show_error=False):
@@ -66,8 +68,10 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
     finally:
       shutil.rmtree(temp_dir)
 
-      if(show_error and re.search(': not found|[0-9]:in', rubocop_output)):
-        print("\nPretty Ruby | RuboCop Warning: \n" + rubocop_output)
+      if(show_error and not re.search('1 file inspected', rubocop_output)):
+        if(re.search('ruby_executable_hooks', rubocop_output) and re.search('rvm', rubocop_path) and re.search('bin', rubocop_path)):
+          sublime.error_message("Pretty Ruby\n\nWarning:\nRVM Problem (RuboCop): executable hooks\n\nUse wrappers instead of bin:\n\nWrong:\n" + rubocop_path + "\n\nCorrect:\n" + rubocop_path.replace('/bin/', '/wrappers/') + "\n\nMore info:\nhttps://github.com/gbaptista/sublime-3-pretty-ruby#rubocop-problem-rvm-executable-hooks")
+        print("\nPretty Ruby | RuboCop Warning: \n[" + rubocop_path + "]\n" + rubocop_output)
 
       if output:
         return output
