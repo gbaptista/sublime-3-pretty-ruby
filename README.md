@@ -2,33 +2,7 @@
 
 Use [Ruby PP](http://ruby-doc.org/stdlib-2.0/libdoc/pp/rdoc/PP.html) and [RuboCop Autocorrect](https://github.com/bbatsov/rubocop#autocorrect) to indent, format and prettify your Ruby code.
 
-## Demos
-Source:
-```ruby
-['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Amet']
-
-{ :lorem => "Ipsum", :dolor => 'Sit' }
-```
-Result:
-```ruby
-%w(Lorem Ipsum Dolor Sit Amet)
-
-{ lorem: 'Ipsum', dolor: 'Sit' }
-```
-Source:
-```ruby
-[{ :lorem => "Ipsum", :dolor => 'Sit' }, { :lorem => "Ipsum", :dolor => 'Sit' }, { :lorem => "Ipsum", :dolor => 'Sit' }, { :lorem => "Ipsum", :dolor => 'Sit' }, { :lorem => "Ipsum", :dolor => 'Sit' }, { :lorem => "Ipsum", :dolor => 'Sit' }, { :lorem => "Ipsum", :dolor => 'Sit' }]
-```
-Result:
-```ruby
-[{ lorem: 'Ipsum', dolor: 'Sit' },
- { lorem: 'Ipsum', dolor: 'Sit' },
- { lorem: 'Ipsum', dolor: 'Sit' },
- { lorem: 'Ipsum', dolor: 'Sit' },
- { lorem: 'Ipsum', dolor: 'Sit' },
- { lorem: 'Ipsum', dolor: 'Sit' },
- { lorem: 'Ipsum', dolor: 'Sit' }]
-```
+![Demo: Pretty Ruby](https://github.com/gbaptista/sublime-3-pretty-ruby/blob/master/demo.gif)
 
 ### Dependencies:
 
