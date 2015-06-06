@@ -2,7 +2,7 @@
 
 Use [Ruby PP](http://ruby-doc.org/stdlib-2.0/libdoc/pp/rdoc/PP.html) and [RuboCop Autocorrect](https://github.com/bbatsov/rubocop#autocorrect) to indent, format and prettify your Ruby code.
 
-![Demo: Pretty Ruby](https://github.com/gbaptista/sublime-3-pretty-ruby/blob/master/demo.gif)
+![Demo: Pretty Ruby](https://raw.githubusercontent.com/gbaptista/sublime-3-pretty-ruby/master/demo.gif)
 
 ### Dependencies:
 
