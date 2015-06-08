@@ -100,7 +100,7 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
     else:
       stderr = None
 
-    output = str(Popen(command, shell=True, close_fds=True, stderr=stderr, stdout=PIPE).stdout.read())
+    output = str(Popen(command, shell=True, stderr=stderr, stdout=PIPE).stdout.read())
 
     not_result_message = ''
 
