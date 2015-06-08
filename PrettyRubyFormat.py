@@ -7,11 +7,11 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
     rubocop_path = self.load_rubocop_path()
 
     if(ruby_path == 'ruby'):
-      if not self.execute_system_command('which ruby', False):
+      if not self.execute_system_command('whicha ruby', False):
         sublime.error_message("Pretty Ruby\n\nWarning: 'ruby' command not found.\n\nRun the following command to discover your ruby path:\n\nwhich ruby\n\nMore info:\nhttps://github.com/gbaptista/sublime-3-pretty-ruby#custom-rubyrubocop-path")
 
     if(rubocop_path == 'rubocop'):
-      if not self.execute_system_command('which rubocop', False):
+      if not self.execute_system_command('whicha rubocop', False):
         sublime.error_message("Pretty Ruby\n\nWarning: 'rubocop' command not found.\n\nRun the following command to discover your rubocop path:\n\nwhich rubocop\n\nMore info:\nhttps://github.com/gbaptista/sublime-3-pretty-ruby#custom-rubyrubocop-path")
 
     for region in self.view.sel():
@@ -57,12 +57,18 @@ class PrettyRubyFormat(sublime_plugin.TextCommand):
   def apply_rubocop_autocorrect(self, rubocop_path, source, show_error=False):
     try:
       temp_dir = tempfile.mkdtemp()
-      with open(temp_dir + '/rbcac.rb', mode='w', encoding='utf-8') as f:
+
+      if sublime.platform() == 'windows':
+        tmp_file_path = temp_dir + '\\rbcac.rb'
+      else:
+        tmp_file_path = temp_dir + '/rbcac.rb'
+
+      with open(tmp_file_path, mode='w', encoding='utf-8') as f:
         f.write(source)
 
-      rubocop_output = self.execute_system_command(rubocop_path + ' --auto-correct ' + temp_dir + '/rbcac.rb')
+      rubocop_output = self.execute_system_command(rubocop_path + ' --auto-correct ' + tmp_file_path)
 
-      with open(temp_dir + '/rbcac.rb', encoding='utf-8') as f:
+      with open(tmp_file_path, encoding='utf-8') as f:
         output = f.read()
 
     finally:
